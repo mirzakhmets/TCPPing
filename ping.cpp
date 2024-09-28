@@ -2,13 +2,16 @@
 /* 03/03 (c) Alumni, CPing class demo				*/
 /* TCP Ping echo on user-defined protocols			*/
 /****************************************************/
-#include <windows.h>
 
 #include <stdio.h>
+
+#include <winsock2.h>
 
 #include "CPing.h"
 
 #include <stdlib.h>
+
+#include <windows.h>
 
 int PrUsage(char * sPath) {
 	printf("Ping\n");
@@ -23,6 +26,7 @@ int PrUsage(char * sPath) {
 	return (0);
 }
 
+#ifdef TRIAL
 bool IsRegistered() {
 	DWORD value = -1;
 	DWORD valueSize = sizeof(value);
@@ -70,11 +74,14 @@ void CheckRuns() {
 	
 	RegCloseKey(hKey);
 }
+#endif
 
 int main(int argc, char ** argv) {
+#ifdef TRIAL
 	if (!IsRegistered()) {
 		CheckRuns();
 	}
+#endif
 	
 	char sBuffer[256];
 	int iRecvd, iSent, iTotalTimeRecvd, iTotalTimeSent;
