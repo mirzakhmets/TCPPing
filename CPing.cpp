@@ -23,6 +23,8 @@ CPing::CPing() {
 	iTimeOut = 1000;
 	iBytesToRecv = 0;
 	iLastError = WSAStartup(MAKEWORD(2, 0), & wsadata);
+	Res = NULL;
+	iTotalRes = 0;
 	strcpy(szNoop, NOOP);
 }
 CPing::~CPing() {
@@ -36,7 +38,7 @@ unsigned int CPing::PingContinuous(char * szHost, unsigned int iPort, unsigned i
 	char szBuffer[256];
 	if(!iBytesToRecv) iBytesToRecv = strlen(szNoop);
 	if(iPackets > MAX_SENDS) return (0);
-	free(Res);
+	if (Res) free(Res);
 	Res = (pingstore * ) malloc(sizeof(pingstore) * iPackets);
 	memset(Res, 0, sizeof(pingstore) * iPackets);
 	s = socket(AF_INET, SOCK_STREAM, 0);
@@ -77,7 +79,7 @@ unsigned int CPing::PingConnective(char * szHost, unsigned int iPort, unsigned i
 	unsigned int dw1, dw2, dw3;
 	char szBuffer[256];
 	if(iPackets > MAX_SENDS) return (0);
-	free(Res);
+	if (Res) free(Res);
 	Res = (pingstore * ) malloc(sizeof(pingstore) * iPackets);
 	memset(Res, 0, sizeof(pingstore) * iPackets);
 	if(!iBytesToRecv) iBytesToRecv = strlen(szNoop);

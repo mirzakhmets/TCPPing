@@ -3,6 +3,8 @@
 /* TCP Ping echo on user-defined protocols			*/
 /****************************************************/
 
+#define _WINSOCKAPI_
+
 #include <stdio.h>
 
 #include <winsock2.h>
@@ -97,7 +99,7 @@ int main(int argc, char ** argv) {
 		if(!strncmp(argv[i], "-ct", 3)) cvping = 0;
 		if(!strncmp(argv[i], "-n", 2)) {
 			printf("Enter valid NOOP command: ");
-			scanf("%s", sBuffer);
+			gets(sBuffer);			
 			strcpy(cping->szNoop, sBuffer);
 		}
 		if(!strncmp(argv[i], "-crlf", 5)) strcat(cping->szNoop, "\r\n");
@@ -107,8 +109,10 @@ int main(int argc, char ** argv) {
 			cping->iTimeOut = atoi(sBuffer);
 		}
 	}
+	
 	if(cvping) res = cping-> PingConnective(argv[1], port, packets);
 	else res = cping->PingContinuous(argv[1], port, packets);
+	
 	if(res) {
 		memset(iStats, 0, sizeof(int) * 8);
 		iRecvd = iSent = iTotalTimeSent = iTotalTimeRecvd = 0;

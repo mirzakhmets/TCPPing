@@ -18,6 +18,6 @@ for ($i = 2; $i < scalar(@ARGV); $i++)
 	}
 }
 
-open (PING, "|ping.exe $host $port $packets -n -cv -crlf") || die ("Error: ping executable not found\n");
+open (PING, "|tcpping.exe $host $port $packets -n -cv -crlf") || die ("Error: ping executable not found\n");
 print PING "$noop\n";
 close (PING);
